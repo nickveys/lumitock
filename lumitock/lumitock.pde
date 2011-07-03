@@ -1,7 +1,8 @@
 #include <Tlc5940.h>
 #include <Wire.h>
 
-#define DS1337_ADDR B01101000
+#include "ds1337.h"
+#include "util.h"
 
 #define BUTTON_1 7
 #define BUTTON_2 6
@@ -19,16 +20,7 @@ uint16_t BRIGHTNESS_LEVELS[4] =
 
 uint8_t brightness = 0;
 
-struct ds1337_time
-{
-  uint8_t h;
-  uint8_t m;
-  uint8_t s;
-};
-
 static ds1337_time before;
-
-struct ds1337_time getTime();
 
 void doStartupPattern()
 {
@@ -66,32 +58,6 @@ void setup()
   
   doStartupPattern();
   before = getTime();
-}
-
-struct ds1337_time getTime()
-{
-  Wire.beginTransmission(DS1337_ADDR);
-  Wire.send(0);
-  Wire.endTransmission();
-
-  struct ds1337_time time;
-
-  Wire.requestFrom(DS1337_ADDR, 3);
-  time.s = Wire.receive();
-  time.m = Wire.receive();
-  time.h = Wire.receive();
-  
-  return time;
-}
-
-void setTime(ds1337_time time)
-{
-  Wire.beginTransmission(DS1337_ADDR);
-  Wire.send(0);
-  Wire.send(time.s);        // seconds
-  Wire.send(time.m);        // minutes
-  Wire.send(time.h | 0x40); // hours (12h clock)
-  Wire.endTransmission();
 }
 
 void cycleBrightness()
@@ -148,16 +114,6 @@ void setLeds(ds1337_time time)
 
   /* apply LED values */
   Tlc.update();
-}
-
-uint8_t dec2bcd(uint8_t dec)
-{
-  return ((dec / 10) << 4) + (dec % 10);
-}
-
-uint8_t bcd2dec(uint8_t bcd)
-{
-  return ((bcd >> 4) * 10) + (bcd & 0x0F);
 }
 
 ds1337_time plusMinute(ds1337_time time)

@@ -333,10 +333,10 @@ UsedLibrary="clock.lbr"
 
 [Win_1]
 Type="Control Panel"
-Loc="385 158 1442 900"
+Loc="322 162 1385 889"
 State=2
 Number=0
 
 [Desktop]
-Screen="3840 1200"
+Screen="1680 1050"
 Window="Win_1"

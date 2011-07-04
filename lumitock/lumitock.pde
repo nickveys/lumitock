@@ -2,6 +2,7 @@
 #include <Wire.h>
 
 #include "ds1337.h"
+#include "leds.h"
 #include "util.h"
 
 #define BUTTON_1 7
@@ -9,16 +10,6 @@
 
 #define BUTTON_DOWN 0
 #define BUTTON_UP !BUTTON_DOWN
-
-uint16_t BRIGHTNESS_LEVELS[4] =
-{
-  1000,
-  2000,
-  3000,
-  4000,
-};
-
-uint8_t brightness = 0;
 
 static ds1337_time before;
 
@@ -53,109 +44,9 @@ void setup()
 
   pinMode(BUTTON_1, INPUT);
   pinMode(BUTTON_2, INPUT);
-
-  brightness = 3;
   
   doStartupPattern();
   before = getTime();
-}
-
-void cycleBrightness()
-{
-  if (brightness == 3)
-  {
-    brightness = 0;
-  }
-  else
-  {
-    ++brightness;
-  }
-}
-
-uint8_t hasCountSet(uint8_t *indices, uint8_t size, uint8_t count)
-{
-  for (uint8_t i = 0; i < size; ++i)
-  {
-    count = indices[i] ? count - 1 : count;
-  }
-
-  return 0 == count;
-}
-
-void setRandomIndex(boolean *indices, uint8_t size)
-{
-  indices[random(size)] = true;
-}
-
-void setSegment(uint8_t ch0, uint8_t count, uint8_t value)
-{
-  boolean indices[16] = { false };
-
-  while (!hasCountSet(indices, count, value))
-  {
-    setRandomIndex(indices, count);
-  }
-
-  for (uint8_t i = 0; i < count; ++i)
-  {
-    Tlc.set(i + ch0, indices[i] ? BRIGHTNESS_LEVELS[brightness] : 0);
-  }
-}
-
-void setLeds(ds1337_time time)
-{
-  /* set all values to zero */
-  Tlc.clear();
-  
-  setSegment(25, 2, (time.h & 0x30) >> 4);
-  setSegment(16, 9, time.h & 0x0F);
-  setSegment(9, 6, (time.m & 0x70) >> 4);
-  setSegment(0, 9, time.m & 0x0F);
-
-  /* apply LED values */
-  Tlc.update();
-}
-
-ds1337_time plusMinute(ds1337_time time)
-{
-  uint8_t m = bcd2dec(time.m & 0x7F);
-
-  ++m;
-  if (m > 59)
-  {
-    m = 0;
-  }
-  
-  time.m = 0x7F & dec2bcd(m);
-  return time;
-}
-
-ds1337_time plusHour(ds1337_time time)
-{
-  uint8_t h = bcd2dec(time.h & 0x3F);
-  
-  ++h;
-  if (h > 12)
-  {
-    h = 1;
-  }
-  
-  time.h = 0x3F & dec2bcd(h);
-  return time;
-}
-
-void printTime(ds1337_time time)
-{
-  uint8_t s = bcd2dec(time.s & 0x7F);
-  uint8_t m = bcd2dec(time.m & 0x7F);
-  uint8_t h = bcd2dec(time.h & 0x3F);
-
-  Serial.print("Current time: ");
-  Serial.print(h, DEC);
-  Serial.print(":");
-  Serial.print(m, DEC);
-  Serial.print(":");
-  Serial.println(s, DEC);
 }
 
 void doButton1()

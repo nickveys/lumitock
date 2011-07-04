@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-struct ds1337_time
+typedef struct ds1337_time
 {
   uint8_t h;
   uint8_t m;
@@ -13,5 +13,11 @@ struct ds1337_time
 struct ds1337_time getTime();
 
 void setTime(struct ds1337_time time);
+
+struct ds1337_time plusMinute(struct ds1337_time time);
+
+struct ds1337_time plusHour(struct ds1337_time time);
+
+void printTime(struct ds1337_time time);
 
 #endif

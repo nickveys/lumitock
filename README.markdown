@@ -1,8 +1,12 @@
 Dot-oriented LED clock.
 
 ## Schematic
+Schematic is in EAGLE CAD, screenshot:
+![Schematic screen-shot](schematic.png)
 
 ## Board Layout
+Board layout is in EAGLE CAD, screenshot:
+![Layout screen-shot](layout.png)
 
 ## Materials
 * QTLP670C LEDs

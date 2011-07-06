@@ -4,6 +4,7 @@ Dot-oriented LED clock.
 * QTLP670C LEDs
 * DS1337C RTC
 * TLC5940 LED controllers
+* Arduino Mini Pro
 
 ## Project Details
 * Built on Arduino Uno

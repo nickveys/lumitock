@@ -78,7 +78,7 @@ void setLeds(struct ds1337_time time)
   /* set all values to zero */
   Tlc.clear();
   
-  setSegment(25, 2, (time.h & 0x30) >> 4);
+  setSegment(25, 3, (time.h & 0x30) >> 4);
   setSegment(16, 9, time.h & 0x0F);
   setSegment(9, 6, (time.m & 0x70) >> 4);
   setSegment(0, 9, time.m & 0x0F);

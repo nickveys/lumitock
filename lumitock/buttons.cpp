@@ -34,13 +34,11 @@ void setupButtons()
 
 void doButton1()
 {
-  Serial.println("Button 1 pressed!");
   setTime(plusMinute(getTime()));
 }
 
 void doButton2()
 {
-  Serial.println("Button 2 pressed!");
   setTime(plusHour(getTime()));
 }
 

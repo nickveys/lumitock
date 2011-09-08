@@ -86,8 +86,10 @@ void printTime(struct ds1337_time time)
   Serial.print("Current time: ");
   Serial.print(h, DEC);
   Serial.print(":");
+  if (m < 10) Serial.print("0");
   Serial.print(m, DEC);
   Serial.print(":");
+  if (s < 10) Serial.print("0");
   Serial.println(s, DEC);
 }
 

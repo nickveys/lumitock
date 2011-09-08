@@ -20,6 +20,14 @@
 
 #include <stdint.h>
 
+#define SECONDS_MASK   0x7F
+#define MINUTES_MASK   0x7F
+#define HOURS_MASK_12H 0x1F
+#define HOURS_MASK_24H 0x3F
+
+#define HOURS_FLAG_PM  (1 << 5)
+#define HOURS_FLAG_12H (1 << 6)
+
 typedef struct ds1337_time
 {
   uint8_t h;

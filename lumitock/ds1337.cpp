@@ -41,47 +41,48 @@ struct ds1337_time getTime()
 
 void setTime(struct ds1337_time time)
 {
+  /* tidy up the values */
+  time.s &= SECONDS_MASK;
+  time.m &= MINUTES_MASK;
+  time.h &= HOURS_MASK_12H;
+  time.h |= HOURS_FLAG_12H;
+
+  /* send the update */
   Wire.beginTransmission(DS1337_ADDR);
   Wire.send(0);
-  Wire.send(time.s);        // seconds
-  Wire.send(time.m);        // minutes
-  Wire.send(time.h | 0x40); // hours (12h clock)
+  Wire.send(time.s);
+  Wire.send(time.m);
+  Wire.send(time.h);
   Wire.endTransmission();
 }
 
 struct ds1337_time plusMinute(struct ds1337_time time)
 {
-  uint8_t m = bcd2dec(time.m & 0x7F);
+  uint8_t m = bcd2dec(time.m & MINUTES_MASK);
+  time.m = MINUTES_MASK & dec2bcd(++m % 60);
 
-  ++m;
-  if (m > 59)
-  {
-    m = 0;
-  }
-  
-  time.m = 0x7F & dec2bcd(m);
   return time;
 }
 
 struct ds1337_time plusHour(struct ds1337_time time)
 {
-  uint8_t h = bcd2dec(time.h & 0x3F);
-  
+  uint8_t h = bcd2dec(time.h & HOURS_MASK_12H);
+
   ++h;
   if (h > 12)
   {
     h = 1;
   }
-  
-  time.h = 0x3F & dec2bcd(h);
+
+  time.h = HOURS_MASK_12H & dec2bcd(h);
   return time;
 }
 
 void printTime(struct ds1337_time time)
 {
-  uint8_t s = bcd2dec(time.s & 0x7F);
-  uint8_t m = bcd2dec(time.m & 0x7F);
-  uint8_t h = bcd2dec(time.h & 0x3F);
+  uint8_t s = bcd2dec(time.s & SECONDS_MASK);
+  uint8_t m = bcd2dec(time.m & MINUTES_MASK);
+  uint8_t h = bcd2dec(time.h & HOURS_MASK_12H);
 
   Serial.print("Current time: ");
   Serial.print(h, DEC);

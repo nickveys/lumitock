@@ -43,34 +43,36 @@ void cycleBrightness()
   }
 }
 
-boolean hasCountSet(boolean *indices, uint8_t size, uint8_t count)
+boolean hasCountSet(uint16_t indices, uint8_t size, uint8_t count)
 {
   for (uint8_t i = 0; i < size; ++i)
   {
-    count = indices[i] ? count - 1 : count;
+    count = (indices & (1 << i)) ? count - 1 : count;
   }
 
   return 0 == count;
 }
 
-void setRandomIndex(boolean *indices, uint8_t size)
+void setRandomIndex(uint16_t *indices, uint8_t size)
 {
-  indices[random(size)] = true;
+  (*indices) |= (1 << random(size));
 }
 
-void setSegment(uint8_t ch0, uint8_t count, uint8_t value)
+uint16_t setRandomSegment(uint8_t ch0, uint8_t count, uint8_t value)
 {
-  boolean indices[16] = { false };
+  uint16_t indices = 0;
 
   while (!hasCountSet(indices, count, value))
   {
-    setRandomIndex(indices, count);
+    setRandomIndex(&indices, count);
   }
 
   for (uint8_t i = 0; i < count; ++i)
   {
-    Tlc.set(i + ch0, indices[i] ? BRIGHTNESS_LEVELS[brightness] : 0);
+    Tlc.set(i + ch0, (indices & (1 << i)) ? BRIGHTNESS_LEVELS[brightness] : 0);
   }
+  
+  return indices;
 }
 
 void setLeds(struct ds1337_time time)
@@ -78,10 +80,10 @@ void setLeds(struct ds1337_time time)
   /* set all values to zero */
   Tlc.clear();
   
-  setSegment(25, 3, (time.h & HOURS_12H_MASK_UPPER) >> 4);
-  setSegment(16, 9, time.h & HOURS_12H_MASK_LOWER);
-  setSegment(9, 6, (time.m & MINUTES_MASK_UPPER) >> 4);
-  setSegment(0, 9, time.m & MINUTES_MASK_LOWER);
+  setRandomSegment(25, 3, (time.h & HOURS_12H_MASK_UPPER) >> 4);
+  setRandomSegment(16, 9, time.h & HOURS_12H_MASK_LOWER);
+  setRandomSegment(9, 6, (time.m & MINUTES_MASK_UPPER) >> 4);
+  setRandomSegment(0, 9, time.m & MINUTES_MASK_LOWER);
 
   /* apply LED values */
   Tlc.update();

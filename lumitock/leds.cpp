@@ -29,7 +29,7 @@ uint16_t BRIGHTNESS_LEVELS[4] =
   4000,
 };
 
-uint8_t brightness = 3;
+uint8_t brightness = 0;
 
 void cycleBrightness()
 {
@@ -80,10 +80,10 @@ void setLeds(struct ds1337_time time)
   /* set all values to zero */
   Tlc.clear();
   
-  setRandomSegment(25, 3, (time.h & HOURS_12H_MASK_UPPER) >> 4);
-  setRandomSegment(16, 9, time.h & HOURS_12H_MASK_LOWER);
-  setRandomSegment(9, 6, (time.m & MINUTES_MASK_UPPER) >> 4);
-  setRandomSegment(0, 9, time.m & MINUTES_MASK_LOWER);
+  setRandomSegment(16, 3, (time.h & HOURS_12H_MASK_UPPER) >> 4);
+  setRandomSegment(19, 9, time.h & HOURS_12H_MASK_LOWER);
+  setRandomSegment(0, 6, (time.m & MINUTES_MASK_UPPER) >> 4);
+  setRandomSegment(6, 9, time.m & MINUTES_MASK_LOWER);
 
   /* apply LED values */
   Tlc.update();

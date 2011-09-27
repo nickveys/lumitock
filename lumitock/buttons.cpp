@@ -20,8 +20,8 @@
 #include "buttons.h"
 #include "ds1337.h"
 
-#define BUTTON_1 7
-#define BUTTON_2 6
+#define BUTTON_1 6
+#define BUTTON_2 7
 
 #define BUTTON_DOWN 0
 #define BUTTON_UP !BUTTON_DOWN

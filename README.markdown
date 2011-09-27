@@ -1,4 +1,8 @@
-Dot-oriented LED clock.
+# Lumitock
+Lumitock is an LED-grid clock.  Each digit is represented by a grid of LEDs, the quantity lit indicates the time for that segment.
+
+## Images, other information
+* [Blog post about prototype](http://veys.com/2011/09/26/an-open-source-led-grid-clock)
 
 ## Materials
 * QTLP670C LEDs

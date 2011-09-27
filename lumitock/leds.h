@@ -23,6 +23,8 @@
 
 #include "ds1337.h"
 
+void doStartupPattern();
+
 boolean hasCountSet(uint16_t indices, uint8_t size, uint8_t count);
 
 void setRandomIndex(uint16_t *indices, uint8_t size);

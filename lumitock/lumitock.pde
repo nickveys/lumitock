@@ -41,13 +41,15 @@ void setup()
 
 void loop()
 {
+  static boolean first = true;
   ds1337_time now = getTime();
 
-  if (now.s != before.s || now.m != before.m || now.h != before.h)
+  if (first || (now.m != before.m || now.h != before.h))
   {
     printTime(now);
     setLeds(now);
     before = now;
+    first = false;
   }
 
   checkButtons();

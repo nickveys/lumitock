@@ -104,6 +104,27 @@ void setRandomIndex(uint16_t *indices, uint8_t size)
   (*indices) |= (1 << random(size));
 }
 
+uint16_t setSegment(uint8_t ch0, uint8_t count, uint16_t indices, boolean fadeIn)
+{
+  uint16_t maxval = BRIGHTNESS_LEVELS[brightness];
+  uint32_t t0 = millis() + 50;
+  uint32_t t1 = t0 + 500;
+
+  for (uint8_t i = 0; i < count; ++i)
+  {
+    if (fadeIn)
+    {
+      tlc_addFade(i + ch0, 0, (indices & (1 << i)) ? maxval : 0, t0, t1);
+    }
+    else
+    {
+      tlc_addFade(i + ch0, (indices & (1 << i)) ? maxval : 0, 0, t0, t1);
+    }
+  }
+
+  return indices;
+}
+
 uint16_t setRandomSegment(uint8_t ch0, uint8_t count, uint8_t value)
 {
   uint16_t indices = 0;
@@ -113,25 +134,32 @@ uint16_t setRandomSegment(uint8_t ch0, uint8_t count, uint8_t value)
     setRandomIndex(&indices, count);
   }
 
-  for (uint8_t i = 0; i < count; ++i)
-  {
-    Tlc.set(i + ch0, (indices & (1 << i)) ? BRIGHTNESS_LEVELS[brightness] : 0);
-  }
-  
-  return indices;
+  return setSegment(ch0, count, indices, true);
 }
 
 void setLeds(struct ds1337_time time)
 {
-  /* set all values to zero */
-  Tlc.clear();
-  
-  setRandomSegment(16, 3, (time.h & HOURS_12H_MASK_UPPER) >> 4);
-  setRandomSegment(19, 9, time.h & HOURS_12H_MASK_LOWER);
-  setRandomSegment(0, 6, (time.m & MINUTES_MASK_UPPER) >> 4);
-  setRandomSegment(6, 9, time.m & MINUTES_MASK_LOWER);
+  static boolean first = true;
+  static uint16_t hu, hl, mu, ml;
 
-  /* apply LED values */
-  Tlc.update();
+  if (!first)
+  {
+    setSegment(16, 3, hu, false);
+    setSegment(19, 9, hl, false);
+    setSegment(0, 6, mu, false);
+    setSegment(6, 9, ml, false);
+    while (tlc_updateFades());
+  }
+  else
+  {
+    Tlc.clear();
+    first = false;
+  }
+
+  hu = setRandomSegment(16, 3, (time.h & HOURS_12H_MASK_UPPER) >> 4);
+  hl = setRandomSegment(19, 9, time.h & HOURS_12H_MASK_LOWER);
+  mu = setRandomSegment(0, 6, (time.m & MINUTES_MASK_UPPER) >> 4);
+  ml = setRandomSegment(6, 9, time.m & MINUTES_MASK_LOWER);
+  while (tlc_updateFades());
 }
 

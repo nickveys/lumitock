@@ -25,31 +25,9 @@
 
 #include "leds.h"
 
-uint16_t BRIGHTNESS_LEVELS[4] =
-{
-  1000,
-  2000,
-  3000,
-  4000,
-};
-
-uint8_t brightness = 0;
-
-void cycleBrightness()
-{
-  if (brightness == 3)
-  {
-    brightness = 0;
-  }
-  else
-  {
-    ++brightness;
-  }
-}
-
 void doStartupPattern()
 {
-  uint8_t maxv = 2000;
+  uint8_t maxv = 3000;
   uint16_t dur = 350;
 
   uint8_t cols[][3] =
@@ -106,7 +84,7 @@ void setRandomIndex(uint16_t *indices, uint8_t size)
 
 uint16_t setSegment(uint8_t ch0, uint8_t count, uint16_t indices, boolean fadeIn)
 {
-  uint16_t maxval = BRIGHTNESS_LEVELS[brightness];
+  uint16_t maxval = 300;
   uint32_t t0 = millis() + 50;
   uint32_t t1 = t0 + 500;
 

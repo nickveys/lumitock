@@ -37,7 +37,7 @@
 #define HOURS_FLAG_PM  (1 << 5)
 #define HOURS_FLAG_12H (1 << 6)
 
-typedef struct ds1337_time
+struct ds1337_time
 {
   uint8_t h;
   uint8_t m;

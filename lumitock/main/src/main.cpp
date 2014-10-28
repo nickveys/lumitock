@@ -15,13 +15,13 @@
  * along with lumitock.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <Arduino.h>
 #include <Tlc5940.h>
 #include <Wire.h>
 
-#include "buttons.h"
-#include "ds1337.h"
-#include "leds.h"
-#include "util.h"
+#include <buttons.h>
+#include <ds1337.h>
+#include <leds.h>
 
 static ds1337_time before;
 
@@ -54,4 +54,3 @@ void loop()
 
   checkButtons();
 }
-

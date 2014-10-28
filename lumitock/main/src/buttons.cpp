@@ -15,10 +15,10 @@
  * along with lumitock.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <WProgram.h>
+#include <Arduino.h>
 
-#include "buttons.h"
-#include "ds1337.h"
+#include <buttons.h>
+#include <ds1337.h>
 
 #define BUTTON_1 6
 #define BUTTON_2 7

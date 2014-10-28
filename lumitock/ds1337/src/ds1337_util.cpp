@@ -17,7 +17,7 @@
 
 #include <stdint.h>
 
-#include "util.h"
+#include <ds1337_util.h>
 
 uint8_t dec2bcd(uint8_t dec)
 {

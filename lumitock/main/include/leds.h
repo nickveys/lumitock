@@ -19,7 +19,7 @@
 #define LUMI_LEDS_H
 
 #include <stdint.h>
-#include <WProgram.h>
+#include <Arduino.h>
 
 #include "ds1337.h"
 

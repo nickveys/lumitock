@@ -15,26 +15,26 @@
  * along with lumitock.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <Arduino.h>
 #include <Wire.h>
-#include <WProgram.h>
 
-#include "ds1337.h"
-#include "util.h"
+#include <ds1337.h>
+#include <ds1337_util.h>
 
 #define DS1337_ADDR 0x68
 
 struct ds1337_time getTime()
 {
   Wire.beginTransmission(DS1337_ADDR);
-  Wire.send(0);
+  Wire.write(0);
   Wire.endTransmission();
 
   struct ds1337_time time;
 
   Wire.requestFrom(DS1337_ADDR, 3);
-  time.s = Wire.receive();
-  time.m = Wire.receive();
-  time.h = Wire.receive();
+  time.s = Wire.read();
+  time.m = Wire.read();
+  time.h = Wire.read();
   
   return time;
 }
@@ -49,10 +49,10 @@ void setTime(struct ds1337_time time)
 
   /* send the update */
   Wire.beginTransmission(DS1337_ADDR);
-  Wire.send(0);
-  Wire.send(time.s);
-  Wire.send(time.m);
-  Wire.send(time.h);
+  Wire.write(0);
+  Wire.write(time.s);
+  Wire.write(time.m);
+  Wire.write(time.h);
   Wire.endTransmission();
 }
 

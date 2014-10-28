@@ -23,7 +23,7 @@
 
 #include <stdint.h>
 
-#include "leds.h"
+#include <leds.h>
 
 void doStartupPattern()
 {

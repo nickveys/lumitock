@@ -18,14 +18,3 @@ Lumitock is an LED-grid clock.  Each digit is represented by a grid of LEDs, the
 * Schematics and layouts in [EAGLE](http://www.cadsoft.de)
  * Edit EAGLE directories and add root of this project
 
-## License
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the [GNU General Public License](http://www.gnu.org/licenses) as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
